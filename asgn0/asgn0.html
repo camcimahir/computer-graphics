@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="utf-8" />
+        <title>Assignment 0: Vector Library</title>
+    </head>
+
+    <body onload="main()">
+        <canvas id="canvas" width="400" height="400">
+            use a HTML5 compatible browser that supports the canvas element
+        </canvas>
+
+        <div>
+            
+            V1: X Value
+            <input type="number" id="xInput1" value="0" style="width:70px;">
+            Y Value
+            <input type="number" id="yInput1" value="5" style="width:70px;">
+
+            <br><br>
+
+            V2: X Value
+            <input type="number" id="xInput2" value="5" style="width:70px;">
+            Y Value
+            <input type="number" id="yInput2" value="0" style="width:70px;">
+            <br><br>
+            <input type="button" value="Draw" onclick="handleDrawEvent()">
+
+            <br><br>
+
+            Operation: 
+            <select type="text" id="operation">
+                <option value="addition">Addition</option>
+                <option value="subtraction">Subtraction</option>
+                <option value="multiplication">Multiplication</option>
+                <option value="division">Division</option>
+                <option value="angle between">Angle Between</option>
+                <option value="area">Area</option>
+                <option value="magnitude">Magnitude</option>
+                <option value="normalize">Normalize</option>
+            </select>
+            Scalar: 
+            <input type="number" id="scalar" style="width:70px;">
+            <br><br>
+            <input type="button" value="Draw" onclick="handleDrawOperationEvent()">
+
+        </div>
+
+        <script src="lib/cuon-matrix-cse160.js"></script>
+        <script src="asgn0.js"></script>
+    </body>
+</html>
