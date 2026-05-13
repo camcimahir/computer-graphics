@@ -1,4 +1,4 @@
-// World.js - voxel world (WebGL 1)
+// Utilized LLM's to generate parts of the code
 
 var VSHADER_SOURCE =
   'precision mediump float;\n' +
