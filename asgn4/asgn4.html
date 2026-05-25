@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Assignment 4: Lighting</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg, #1c2333 0%, #0d1119 100%);
+        color: #e8eef7;
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 620px 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+      h1 { margin: 0 0 12px; font-size: 22px; color: #cfe1ff; }
+      .stage { text-align: center; }
+      canvas {
+        border: 1px solid #3b4d6b;
+        background: #0d1119;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        cursor: crosshair;
+        display: block;
+        margin: 0 auto;
+      }
+      #hud {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #9fb5d4;
+      }
+      .panel {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid #2a3852;
+        border-radius: 10px;
+        padding: 16px 18px;
+      }
+      .panel h2 {
+        font-size: 14px;
+        margin: 0 0 10px;
+        color: #aac4ea;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-size: 13px; }
+      .row label { width: 110px; color: #cfdbee; }
+      .row input[type="range"] { flex: 1; }
+      .row .val { width: 48px; text-align: right; color: #9fb5d4; font-variant-numeric: tabular-nums; }
+      .btnrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+      button {
+        background: #28385a;
+        color: #e8eef7;
+        border: 1px solid #3b4d6b;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      button:hover { background: #324a78; }
+      button.active { background: #4f7ac6; border-color: #6c97e1; }
+      .hint { color: #6f86a8; font-size: 11px; margin-top: 8px; }
+      .swatch {
+        display: inline-block;
+        width: 20px; height: 20px;
+        border: 1px solid #3b4d6b;
+        border-radius: 4px;
+        vertical-align: middle;
+        margin-left: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div>
+        <h1>Assignment 4 &mdash; Phong Lighting</h1>
+        <div class="stage">
+          <canvas id="webgl" width="600" height="600">
+            Please use a browser that supports "canvas"
+          </canvas>
+          <div id="hud"></div>
+          <div class="hint">
+            WASD move &middot; QE turn &middot; Mouse look (click canvas) &middot; SPACE jump
+            &middot; F place block &middot; G remove block
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h2>Lighting</h2>
+          <div class="btnrow">
+            <button id="btnLighting" class="active">Lighting: On</button>
+            <button id="btnNormalViz">Normal Viz: Off</button>
+          </div>
+          <div class="btnrow">
+            <button id="btnPoint" class="active">Point Light: On</button>
+            <button id="btnSpot" class="active">Spot Light: On</button>
+            <button id="btnAnimate" class="active">Animate Light: On</button>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:12px;">
+          <h2>Point Light</h2>
+          <div class="row">
+            <label>X</label>
+            <input id="lx" type="range" min="-20" max="20" step="0.1" value="3" />
+            <span class="val" id="lxv">3.0</span>
+          </div>
+          <div class="row">
+            <label>Y</label>
+            <input id="ly" type="range" min="0" max="20" step="0.1" value="4" />
+            <span class="val" id="lyv">4.0</span>
+          </div>
+          <div class="row">
+            <label>Z</label>
+            <input id="lz" type="range" min="-20" max="20" step="0.1" value="3" />
+            <span class="val" id="lzv">3.0</span>
+          </div>
+          <div class="row">
+            <label>Color R</label>
+            <input id="lcr" type="range" min="0" max="1" step="0.01" value="1" />
+            <span class="val" id="lcrv">1.00</span>
+          </div>
+          <div class="row">
+            <label>Color G</label>
+            <input id="lcg" type="range" min="0" max="1" step="0.01" value="1" />
+            <span class="val" id="lcgv">1.00</span>
+          </div>
+          <div class="row">
+            <label>Color B</label>
+            <input id="lcb" type="range" min="0" max="1" step="0.01" value="1" />
+            <span class="val" id="lcbv">1.00</span>
+          </div>
+          <div class="row">
+            <label>Preview</label>
+            <span id="lswatch" class="swatch"></span>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:12px;">
+          <h2>Spot Light</h2>
+          <div class="row">
+            <label>X</label>
+            <input id="sx" type="range" min="-20" max="20" step="0.1" value="0" />
+            <span class="val" id="sxv">0.0</span>
+          </div>
+          <div class="row">
+            <label>Y</label>
+            <input id="sy" type="range" min="0" max="20" step="0.1" value="6" />
+            <span class="val" id="syv">6.0</span>
+          </div>
+          <div class="row">
+            <label>Z</label>
+            <input id="sz" type="range" min="-20" max="20" step="0.1" value="0" />
+            <span class="val" id="szv">0.0</span>
+          </div>
+          <div class="row">
+            <label>Cutoff &deg;</label>
+            <input id="scut" type="range" min="2" max="60" step="0.5" value="18" />
+            <span class="val" id="scutv">18.0</span>
+          </div>
+          <div class="row">
+            <label>Penumbra &deg;</label>
+            <input id="spen" type="range" min="0" max="30" step="0.5" value="6" />
+            <span class="val" id="spenv">6.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../asgn2/lib/webgl-utils.js?v=1"></script>
+    <script src="../asgn2/lib/webgl-debug.js?v=1"></script>
+    <script src="../asgn2/lib/cuon-utils.js?v=1"></script>
+    <script src="../asgn2/lib/cuon-matrix.js?v=1"></script>
+    <script src="Cube.js?v=1"></script>
+    <script src="Sphere.js?v=1"></script>
+    <script src="Cylinder.js?v=1"></script>
+    <script src="Model.js?v=1"></script>
+    <script src="camera.js?v=1"></script>
+    <script src="asgn4.js?v=1"></script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+Your current layout (as wired in World.js):
+
+  textures/brick texture.webp      -> perimeter brick walls (u_Sampler0)
+  textures/minecraft texture.webp -> ground + use as generic tile (u_Sampler1)
+  textures/stone texture.webp     -> interior stone (u_Sampler3)
+  ../examples/examples/resources/sky.jpg -> skybox (u_Sampler2), from the class examples folder
+
+URLs use encodeURIComponent on the file name so spaces in "brick texture.webp" work.
+
+If the server root is the repo (CSE-160), paths resolve from asgn3/World.html.
+
+Optional: add textures/sky.png — then change World.js TEXTURE_MANIFEST sky entry to textureUrl('textures/sky.png').
