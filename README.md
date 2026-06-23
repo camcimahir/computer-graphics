@@ -4,7 +4,29 @@ A collection of interactive 3D graphics projects built from scratch during CSE 1
 
 **[Live Site →](https://camcimahir.github.io/CSE-160/)**
 
-## Projects
+## Featured Projects
+
+### Sunset Speedway · Three.js
+
+Animated 3D racing environment with spline-based car animation, shadow mapping, rain particles, and GLTF model loading.
+
+<video src="sunset-speedway.mp4" autoplay loop muted playsinline width="100%"></video>
+
+**[Open Project →](https://camcimahir.github.io/CSE-160/sunset-speedway/race-track-sunset/index.html)**
+
+---
+
+### Phong Lighting Engine · WebGL / GLSL
+
+Custom WebGL engine implementing Phong illumination with dynamic point lights, spotlights, normal matrices, and OBJ parsing.
+
+<video src="lighting.mp4" autoplay loop muted playsinline width="100%"></video>
+
+**[Open Project →](https://camcimahir.github.io/CSE-160/lighting-engine/asgn4.html)**
+
+---
+
+## All Projects
 
 | Project | Description | Tech |
 |---|---|---|
